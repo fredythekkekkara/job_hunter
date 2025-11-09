@@ -4,6 +4,8 @@ from kb_loader import load_yaml_files
 from rag import RAGManager
 from langchain_ollama.llms import OllamaLLM
 from langchain_core.prompts import ChatPromptTemplate
+import ast
+import json
 
 MODEL_VERSION = "deepseek-r1:8b"
 MODEL = OllamaLLM(model=MODEL_VERSION)
@@ -33,9 +35,131 @@ def extract_ats_keywords(job_description: str) -> list:
 
     Provide the output ONLY as a valid Python list of strings.
     """
+
+
+    JD_ANALYSIS_PROMPT = """Analyze the following job description and extract structured information to help tailor a resume. Return ONLY a valid JSON object with no preamble, explanation, or markdown formatting.
+
+        Job Description:
+        {job_description}
+
+        Extract and return the following information in this exact JSON structure:
+
+        {{{{
+        "job_title": "exact job title from the posting",
+        "company_name": "company name if mentioned",
+        "role_summary": "brief 1-2 sentence summary of the role",
+        
+        "ats_keywords": {{{{
+            "hard_skills": ["list of technical skills, tools, technologies"],
+            "soft_skills": ["list of soft skills like leadership, communication"],
+            "certifications": ["required or preferred certifications"],
+            "industry_terms": ["industry-specific terminology and buzzwords"]
+        }}}},
+        
+        "required_qualifications": [
+            {{{{
+            "qualification": "specific requirement",
+            "weight": "critical|high|medium|low",
+            "category": "education|experience|skill|certification"
+            }}}}
+        ],
+        
+        "preferred_qualifications": [
+            {{{{
+            "qualification": "specific preference",
+            "weight": "high|medium|low",
+            "category": "education|experience|skill|certification"
+            }}}}
+        ],
+        
+        "key_responsibilities": [
+            {{{{
+            "responsibility": "specific duty or task",
+            "importance": "primary|secondary|additional",
+            "skills_needed": ["related skills for this responsibility"]
+            }}}}
+        ],
+        
+        "experience_requirements": {{{{
+            "years_required": "X-Y years or 'not specified'",
+            "level": "entry|mid|senior|lead|executive",
+            "domains": ["specific domains or industries mentioned"]
+        }}}},
+        
+        "education_requirements": {{{{
+            "degree_level": "high school|associates|bachelors|masters|phd|not specified",
+            "fields_of_study": ["preferred fields"],
+            "alternatives_accepted": true/false
+        }}}},
+        
+        "technical_stack": {{{{
+            "programming_languages": ["languages with frequency/importance"],
+            "frameworks_libraries": ["frameworks and libraries"],
+            "tools_platforms": ["development tools, platforms, software"],
+            "databases": ["database technologies"],
+            "cloud_services": ["AWS, Azure, GCP, etc."],
+            "methodologies": ["Agile, Scrum, DevOps, etc."]
+        }}}},
+        
+        "role_characteristics": {{{{
+            "type": "individual contributor|manager|hybrid",
+            "team_size": "size if managing, or 'n/a'",
+            "work_mode": "remote|hybrid|onsite|not specified",
+            "travel_required": "percentage or yes/no",
+            "reporting_to": "position title if mentioned"
+        }}}},
+        
+        "company_culture_indicators": [
+            "values, work culture hints from the description"
+        ],
+        
+        "action_verbs": [
+            "key action verbs used in the JD (develop, lead, manage, etc.)"
+        ],
+        
+        "measurable_outcomes": [
+            "any metrics, KPIs, or measurable results mentioned"
+        ],
+        
+        "nice_to_have": [
+            "additional skills or experiences that would be beneficial"
+        ],
+        
+        "red_flags_to_address": [
+            "potential gaps or concerns a candidate should address proactively"
+        ],
+        
+        "resume_optimization_tips": [
+            "specific suggestions for tailoring resume to this job"
+        ]
+        }}}}
+
+        Important: Return ONLY the JSON object. No markdown code blocks, no explanations, no additional text.
+        """
+
+    prompt = JD_ANALYSIS_PROMPT.format(job_description=job_description)
+
     response = ollama_generate(prompt)
+    # response = "['Kubernetes', 'AWS', 'Terraform', 'OpenTofu', 'Postgres', 'CDC systems', 'Docker', 'SQL', 'Python', 'Django', 'WSGI', 'Airflow', 'Spark', 'dbt', 'Jupyter', 'Datadog', 'Grafana', 'Prometheus']"
     # For demo, just split words longer than 4 letters (replace with real LLM parsing)
-    return [w.strip(",.") for w in response.split() if len(w) > 4]
+    print(response)
+    print("********************************************************************")
+    
+    try:
+        result = json.loads(response)
+        return result
+    except json.JSONDecodeError as e:
+        # Handle parsing errors
+        print(f"Error parsing JSON: {e}")
+        # Attempt to extract JSON from markdown blocks if present
+        import re
+        json_match = re.search(r'```(?:json)?\s*(\{.*\})\s*```', response, re.DOTALL)
+        if json_match:
+            return json.loads(json_match.group(1))
+        raise
+
+    response_list = ast.literal_eval(response)
+    return response_list
 
 # def fill_resume_from_kb(kb_data: dict, job_description: str, ats_keywords: list) -> Resume:
 #     resume = Resume()
@@ -77,28 +201,35 @@ def extract_ats_keywords(job_description: str) -> list:
 #     resume.ats_keywords = ats_keywords
 #     return resume
 
-# def build_resume_pipeline(kb_dir: str, job_description: str) -> Resume:
-#     kb_data = load_yaml_files(kb_dir)
-#     print("Loaded KB files:", list(kb_data.keys()))
+def build_resume_pipeline(kb_dir: str, job_description: str) -> Resume:
+    kb_data = load_yaml_files(kb_dir)
+    print("Loaded KB files:", list(kb_data.keys()))
 
-#     rag_manager = RAGManager()
-#     rag_manager.build_or_load(kb_data)
-#     relevant_docs = rag_manager.query(job_description)
+    rag_manager = RAGManager()
+    rag_manager.build_or_load(kb_data)
+    relevant_docs = rag_manager.query(job_description)
 
-#     # For simplicity, just combine all relevant docs text into a single string (extend as needed)
-#     combined_text = " ".join(relevant_docs)
-#     print("-------------- Retrieved Relevant Documents ----------------")
-#     print(combined_text)
-#     print("-------------- Retrieved Relevant Documents End ----------------")
+    # For simplicity, just combine all relevant docs text into a single string (extend as needed)
+    combined_text = " ".join(relevant_docs)
+    print("-------------- Retrieved Relevant Documents ----------------")
+    print(combined_text)
+    print("-------------- Retrieved Relevant Documents End ----------------")
 
-#     ats_keywords = extract_ats_keywords(job_description)
+    ats_keywords = extract_ats_keywords(job_description)
 
-#     print("-------------- Extracted ATS Keywords ----------------")
-#     print("Extracted ATS Keywords:", ats_keywords)
-#     print("-------------- Extracted ATS Keywords End ----------------")
+    print("-------------- Extracted ATS Keywords ----------------")
+    print("Extracted ATS Keywords:", ats_keywords)
+    print("-------------- Extracted ATS Keywords End ----------------")
 
-#     # resume = fill_resume_from_kb(kb_data, combined_text, ats_keywords)
-#     # return resume
+    # relevant_experience = rag_manager.fetch_relevant_experience(
+    #     keywords=ats_keywords
+    # )
+    # print("-------------- Retrieved Relevant Experience ----------------")
+    # print(relevant_experience)
+    # print("-------------- Retrieved Relevant Experience End ----------------")  
+
+    # resume = fill_resume_from_kb(kb_data, combined_text, ats_keywords)
+    # return resume
 
 # def resume_to_markdown(resume: Resume) -> str:
 #     lines = []
