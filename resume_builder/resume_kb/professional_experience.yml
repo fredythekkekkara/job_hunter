@@ -1,0 +1,22 @@
+experience:
+  - company: "Stripe"
+    position: "Senior Data Engineer"
+    location: "San Francisco, CA"
+    start_date: "2022-01"
+    end_date: "Present"
+    achievements:
+      - "Designed and deployed a real-time data ingestion pipeline using Kafka and Spark Streaming, reducing data latency by 70%."
+      - "Built ETL workflows in Airflow for processing 1TB+ daily transaction data."
+      - "Implemented data quality checks and schema validations using Great Expectations."
+      - "Collaborated with data scientists to optimize machine learning feature stores on AWS S3 and Redshift."
+
+  - company: "Airbnb"
+    position: "Data Engineer"
+    location: "San Francisco, CA"
+    start_date: "2019-06"
+    end_date: "2021-12"
+    achievements:
+      - "Developed scalable ETL jobs using Python and PySpark to support analytics for 10+ data teams."
+      - "Migrated legacy data pipelines from on-premise Hadoop to AWS Glue and Redshift."
+      - "Built internal data lineage dashboards using Apache Atlas and Tableau."
+      - "Automated data pipeline monitoring with custom alerting via Slack and PagerDuty."

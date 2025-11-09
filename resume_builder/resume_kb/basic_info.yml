@@ -1,0 +1,14 @@
+name: "Alex Johnson"
+title: "Data Engineer"
+email: "alex.johnson@example.com"
+phone: "+1 (555) 987-6543"
+location: "San Francisco, CA, USA"
+linkedin: "https://linkedin.com/in/alexjohnson"
+github: "https://github.com/alexjohnson-data"
+portfolio: "https://alexjohnson.dev"
+summary: >
+  Data Engineer with 5+ years of experience designing, building, and maintaining
+  data pipelines and cloud-based analytics solutions. Skilled in Python, SQL,
+  and distributed data processing frameworks such as Spark and Airflow.
+  Passionate about building reliable, scalable data architectures to drive
+  business insights.

@@ -1,0 +1,14 @@
+publications:
+  - title: "Optimizing ETL Pipelines for High-Throughput Streaming Data"
+    publisher: "Medium (Towards Data Science)"
+    date: "2023-02"
+    url: "https://medium.com/towards-data-science/etl-pipeline-optimization"
+    summary: >
+      Discussed strategies for optimizing streaming ETL pipelines using Spark Structured Streaming and Kafka.
+
+  - title: "Building a Modern Data Stack on AWS"
+    publisher: "Tech Blog - Stripe"
+    date: "2022-08"
+    url: "https://stripe.dev/blog/modern-data-stack-aws"
+    summary: >
+      Explained architecture patterns and best practices for scalable cloud data infrastructures.

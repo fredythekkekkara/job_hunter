@@ -1,0 +1,21 @@
+education:
+  - degree: "Master of Science"
+    field: "Data Science"
+    institution: "University of California, Berkeley"
+    location: "Berkeley, CA"
+    start_date: "2017-09"
+    end_date: "2019-05"
+    gpa: "3.9/4.0"
+    relevant_courses:
+      - "Machine Learning"
+      - "Big Data Analytics"
+      - "Data Engineering"
+      - "Statistical Inference"
+
+  - degree: "Bachelor of Science"
+    field: "Computer Engineering"
+    institution: "University of Illinois Urbana-Champaign"
+    location: "Champaign, IL"
+    start_date: "2013-09"
+    end_date: "2017-05"
+    gpa: "3.7/4.0"

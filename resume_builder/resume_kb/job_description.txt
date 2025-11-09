@@ -1,0 +1,79 @@
+About the job
+Octopus Energy is a global energy leader revolutionizing the way people use energy. We're not just an energy supplier; we're a tech company building a cleaner, smarter energy future.
+
+The Global Energy Markets team at Octopus Energy makes sure we always have the electricity and gas we need to power our customers’ homes and businesses, while also supporting the grid to accelerate the transition to Net Zero.
+
+To deliver on this mission, our global team is made up of five specialist areas:
+
+Forecasting - predicting energy demand and generation
+
+Trading - hedging and shaping our trading positions
+
+Risk - tracking and reporting ongoing risk to Octopus
+
+PPA - increasing the share of energy we buy directly from generators
+
+Engineering - building and running the global technical platform that makes it all work
+
+Our Engineering sub-team is the glue that keeps everything running. We maintain the global tech platform that powers these processes, and we’re always looking for ways to innovate and improve. Building better tools, streamlining workflows, and creating robust systems that keep trading operations running like clockwork.
+
+We’re looking for an experienced Data Platform Engineer to join us. You’ll be comfortable jumping into different tasks to support each team, using a variety of coding languages across our platform setup. You’ll enjoy working with colleagues across the company, explaining technical processes clearly, and building scalable solutions that support our data growth.
+
+We’d be especially excited to meet someone who has worked with trading systems, data flows, and teams across EU electricity and gas markets, experience that will help us grow internationally.
+This is a chance to take on a role that blends complex data engineering, platform infrastructure, and business-critical problem-solving, all while helping transform the energy industry for the better.
+
+What you will be doing...
+Maintaining and developing our data platform infrastructure, helping team members to debug and resolve live issues while growing a self-service suite of monitoring tools;
+Driving long-term robustness and scalability of trading processes supporting global growth;
+Setting up and maintaining processes for capturing, preparing and loading valuable new data into the data lake;
+Helping trading, forecasting, risk and PPA teams to optimise key operational pipelines while taking responsibility for process maintenance;
+Developing automations and alerts to quickly debug where these pipelines are failing or showing unprecedented trends;
+Working with international teams across the Octopus Energy Group to ensure everyone shares the best possible practises and code is standardised where possible
+
+What you'll have...
+Strong experience in platform infrastructure development with Kubernetes, AWS, Terraform/OpenTofu IAC, Postgres, CDC systems and Docker;
+Passion for enabling self-service platform monitoring using Datadog, Grafana and Prometheus;
+Expertise with SQL and Python as our core data languages;
+Solid experience with Django and WSGI would be highly desirable;
+Experience with our other data products would be beneficial: Airflow, Spark, dbt, Jupyter;
+Skilled at shaping needs into a solid set of requirements and designing scalable solutions to meet them;
+Team player excited at the idea of ownership across lots of different projects and tools;
+Passion for driving towards Net Zero;
+Drives knowledge sharing and documentation for a more effective platform;
+Open to travelling to Octopus offices across Europe and the US
+
+💚 Why else you'll love it here 💚
+💰 Wondering what the salary for this role is? Just ask us! On a call with one of our recruiters it's something we always cover as we genuinely want to match your experience with the correct salary. The reason why we don't advertise is because we honestly have a degree of flexibility and would never want salary to be a reason why someone doesn't apply to Octopus - what's more important to us is finding the right octofit!
+🎉 Octopus Energy Group is a unique culture. An organisation where people learn, decide, and build quicker. Where people work with autonomy, alongside a wide range of amazing co-owners, on projects that break new ground. We want your hard work to be rewarded with perks you actually care about! We won best company to work for in 2022, on Glassdoor we were voted 50 best places to work in 2022 and our Group CEO, Greg has recorded a podcast about our culture and how we empower our people. We’ve also been placed in the top 10 companies for senior leadership
+
+Benefits 💸
+Octopus Energy Group Ltd. stock options
+Monthly contribution toward local transportation ticket
+Monthly contribution toward lunch
+Company pension plan
+Family 👶
+Advice and support with childcare via HeyNanny
+Monthly childcare contribution
+Parental allowance bonus: We top up your parental allowance for 3 months
+Health & wellness 🏋️‍♀️
+Contributions to fitness programs via Wellpass
+Support for your mental well-being with our partner Open Up
+Bike leasing
+Learning & continuing education 📚
+Attractive continuing education and career opportunities
+Free language courses via Busuu
+Extra goodies 🎈
+Voucher for your birthday
+
+
+For this role we are looking for someone who would be happy to work in the Munich office 2-3 days a week.
+
+Our process usually takes up to 4 weeks, but we’ll always do our best to flex around what works for you. Along the way, you’ll chat with our recruitment team and your Recruiter will help you throughout different stages. Got any burning questions before then? Drop us a message at talent@octoenergy.com and we’d love to help!
+
+If this sounds like you then we'd love to hear from you. 🚀
+
+Are you ready for a career with us? We want to ensure you have all the tools and environment you need to unleash your potential. Need any specific accommodations? Whether you require specific accommodations or have a unique preference, let us know, and we'll do what we can to customise your interview process for comfort and maximum magic!
+
+Studies have shown that some groups of people, like women, are less likely to apply to a role unless they meet 100% of the job requirements. Whoever you are, if you like one of our jobs, we encourage you to apply as you might just be the candidate we hire. Across Octopus, we're looking for genuinely decent people who are honest and empathetic. Our people are our strongest asset and the unique skills and perspectives people bring to the team are the driving force of our success. As an equal opportunity employer, we do not discriminate on the basis of any protected attribute. Our commitment is to provide equal opportunities, an inclusive work environment, and fairness for everyone.
+
+We may use artificial intelligence (AI) tools to support parts of the hiring process, such as reviewing applications, analyzing resumes, or assessing responses. These tools assist our recruitment team but do not replace human judgment. Final hiring decisions are ultimately made by humans. If you would like more information about how your data is processed, please contact us.

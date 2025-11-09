@@ -1,0 +1,29 @@
+skills:
+  programming_languages:
+    - "Python"
+    - "SQL"
+    - "Java"
+    - "Scala"
+  data_technologies:
+    - "Apache Spark"
+    - "Kafka"
+    - "Airflow"
+    - "Snowflake"
+    - "Redshift"
+    - "BigQuery"
+  databases:
+    - "PostgreSQL"
+    - "MySQL"
+    - "MongoDB"
+  cloud_platforms:
+    - "AWS (S3, Glue, EMR, Lambda)"
+    - "GCP (BigQuery, Dataflow)"
+  tools_and_frameworks:
+    - "Docker"
+    - "Kubernetes"
+    - "Git"
+    - "Terraform"
+  soft_skills:
+    - "Cross-functional collaboration"
+    - "Problem solving"
+    - "Data-driven decision making"

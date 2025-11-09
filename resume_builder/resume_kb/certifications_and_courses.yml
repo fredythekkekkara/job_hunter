@@ -1,0 +1,15 @@
+certifications:
+  - name: "AWS Certified Data Analytics – Specialty"
+    issuer: "Amazon Web Services"
+    date: "2023-06"
+  - name: "Google Cloud Professional Data Engineer"
+    issuer: "Google Cloud"
+    date: "2022-09"
+
+courses:
+  - name: "Data Engineering with Google Cloud"
+    platform: "Coursera"
+    completion_date: "2021-03"
+  - name: "Advanced SQL for Data Engineers"
+    platform: "Udemy"
+    completion_date: "2020-07"
