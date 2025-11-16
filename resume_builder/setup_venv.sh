@@ -1,11 +1,12 @@
 #!/bin/bash
 
 VENV_DIR="rb_venv"
+PYTHON_VERSION="python3.12" 
 
 # Create virtual environment if not exists
 if [ ! -d "$VENV_DIR" ]; then
-  echo "Creating virtual environment..."
-  python3 -m venv $VENV_DIR
+  echo "Creating virtual environment with $PYTHON_VERSION..."
+  $PYTHON_VERSION -m venv $VENV_DIR
 else
   echo "Virtual environment already exists."
 fi

@@ -6,9 +6,17 @@ from langchain_ollama.llms import OllamaLLM
 from langchain_core.prompts import ChatPromptTemplate
 import ast
 import json
+import yaml
+from typing import Dict, List, Any
+from prompts import key_achievement_rephrase_prompt, skills_prompt_template
+from jinja2 import Template
+
 
 MODEL_VERSION = "deepseek-r1:8b"
 MODEL = OllamaLLM(model=MODEL_VERSION)
+
+EXT_JOB_DESC = ""
+EXT_ATS_KEYWORDS = ""
 # Placeholder for Ollama LLM calls
 def ollama_embed_texts(texts):
     # TODO: Replace with Ollama DeepSeek embeddings
@@ -22,7 +30,7 @@ def ollama_generate(prompt_text: str) -> str:
     result = chain.invoke({"input": prompt_text})
     return str(result)
 
-def extract_ats_keywords(job_description: str) -> list:
+def extract_ats_keywords(job_description: str):
     prompt = f"""
     You are an expert recruiter skilled in identifying key hard skills, abilities, tools, and technologies (HATS keywords) required for a job.
 
@@ -161,6 +169,310 @@ def extract_ats_keywords(job_description: str) -> list:
     response_list = ast.literal_eval(response)
     return response_list
 
+
+
+
+
+
+
+
+
+
+def get_personal_info(data: Dict) -> BasicInfo:
+
+    name = data.get('name', 'N/A')
+    title = data.get('title', 'N/A')
+    email = data.get('email', 'N/A')
+    phone = data.get('phone', 'N/A')
+    location = data.get('location', 'N/A')
+    linkedin = data.get('linkedin', 'N/A')
+    github = data.get('github', 'N/A')
+    portfolio = data.get('portfolio', 'N/A')
+    summary = data.get('summary', 'N/A')
+
+    basic_info = BasicInfo(
+        name=name,
+        title=title,
+        email=email,
+        phone=phone,
+        location=location,
+        linkedin=linkedin,
+        github=github,
+        portfolio=portfolio,
+        summary=summary
+    )
+
+
+    """Extract and process personal information"""
+    personal_info = {
+        'name': name,
+        'title': title,
+        'email': email,
+        'phone': phone,
+        'location': location,
+        'linkedin': linkedin,
+        'github': github,
+        'portfolio': portfolio,
+        'summary': summary
+    }
+    
+    print("📋 PERSONAL INFORMATION")
+    print("=" * 60)
+    for key, value in personal_info.items():
+        if value != 'N/A':
+            print(f"{key.replace('_', ' ').title()}: {value}")
+    print()
+    
+    return basic_info
+
+
+def get_experience_info(data: Dict) -> List[Experience]:
+    """Extract and process experience information"""
+    experiences = data.get('experience', [])
+    experience_formatted = []
+    for idx, exp in enumerate(experiences, 1):
+        position = exp.get('position', 'N/A')
+        company = exp.get('company', 'N/A')
+        location = exp.get('location', 'N/A')
+        start_date = exp.get('start_date', 'N/A')
+        end_date = exp.get('end_date', 'N/A')
+        achievements = exp.get('achievements', [])
+        achievement_formatted = []
+        for achievement in achievements:
+            prompt = key_achievement_rephrase_prompt.render(
+                    job_description=EXT_JOB_DESC,
+                    ats_keywords=EXT_ATS_KEYWORDS,
+                    achievement=achievement,
+                    word_limit_min=10,
+                    word_limit_max=15
+            )
+            print('--------------- PROMPT RESPONSE---------------')
+            # response = ollama_generate(prompt)
+            # achievement_formatted.append(response)
+            print('original achievement: ', achievement)
+            # print('rephrases achievement: ', response)
+            print('--------------- PROMPT RESPONSE END ---------------')
+        experience_entry = Experience(
+            position=position,
+            company=company,
+            location=location,
+            start_date=start_date,
+            end_date=end_date,
+            achievements=achievement_formatted
+        )
+        experience_formatted.append(experience_entry)
+    
+
+
+
+    print("💼 WORK EXPERIENCE")
+    print("=" * 60)
+    for idx, exp in enumerate(experiences, 1):
+        print(f"\n{idx}. {position} at {company}")
+        print(f"   Location: {location}")
+        print(f"   Duration: {start_date} - {end_date}")
+        
+        if achievements:
+            print("   Key Achievements:")
+            for achievement in achievements:
+                print(f"   • {achievement}")
+    print()
+    
+    return experience_formatted
+
+
+def get_skills_info(data: Dict) -> Dict:
+    """Extract and process skills information"""
+    skills = data.get('skills', {})
+    skills_json_string = json.dumps(skills, indent=2)
+    print(skills_json_string)
+    # prompt = skills_prompt_template.render(
+    #                 job_description=EXT_JOB_DESC,
+    #                 skills=skills_json_string
+    #         )
+    #response = ollama_generate(prompt)
+
+    print('--------------- SKILLS PROMPT RESPONSE---------------')
+    # print(prompt)
+    print('--------------- SKILLS PROMPT RESPONSE END ---------------')
+    
+    print("🛠️  SKILLS")
+    print("=" * 60)
+    for category, skill_list in skills.items():
+        category_name = category.replace('_', ' ').title()
+        if isinstance(skill_list, list):
+            print(f"\n{category_name}:")
+            print(f"  {', '.join(skill_list)}")
+        else:
+            print(f"\n{category_name}: {skill_list}")
+    print()
+    
+    return skills
+
+
+def get_publications_info(data: Dict) -> List[Dict]:
+    """Extract and process publications information"""
+    publications = data.get('publications', [])
+    
+    print("📚 PUBLICATIONS")
+    print("=" * 60)
+    for idx, pub in enumerate(publications, 1):
+        print(f"\n{idx}. {pub.get('title', 'N/A')}")
+        print(f"   Publisher: {pub.get('publisher', 'N/A')}")
+        print(f"   Date: {pub.get('date', 'N/A')}")
+        print(f"   URL: {pub.get('url', 'N/A')}")
+        if pub.get('summary'):
+            print(f"   Summary: {pub.get('summary').strip()}")
+    print()
+    
+    return publications
+
+
+def get_certifications_info(data: Dict) -> Dict:
+    """Extract and process certifications and courses"""
+    certifications = data.get('certifications', [])
+    courses = data.get('courses', [])
+    
+    print("🎓 CERTIFICATIONS & EDUCATION")
+    print("=" * 60)
+    
+    if certifications:
+        print("\nCertifications:")
+        for cert in certifications:
+            print(f"  • {cert.get('name', 'N/A')}")
+            print(f"    Issuer: {cert.get('issuer', 'N/A')} | Date: {cert.get('date', 'N/A')}")
+    
+    if courses:
+        print("\nCourses:")
+        for course in courses:
+            print(f"  • {course.get('name', 'N/A')}")
+            print(f"    Platform: {course.get('platform', 'N/A')} | Completed: {course.get('completion_date', 'N/A')}")
+    print()
+    
+    return {'certifications': certifications, 'courses': courses}
+
+
+def route_yaml_data(data: Dict) -> Dict:
+    """
+    Route parsed YAML data to appropriate handler functions
+    based on the keys present in the data
+    """
+    processed_data = {}
+    
+    # Define routing rules: key -> handler function
+    routing_map = {
+        'name': get_personal_info,
+        'experience': get_experience_info,
+        'skills': get_skills_info,
+        'publications': get_publications_info,
+        'certifications': get_certifications_info,
+        'courses': get_certifications_info
+    }
+    
+    # Track which handlers have been called
+    called_handlers = set()
+    
+    # Route to appropriate handlers
+    for key in data.keys():
+        for route_key, handler_func in routing_map.items():
+            if route_key in key.lower() and handler_func not in called_handlers:
+                section_name = handler_func.__name__.replace('get_', '').replace('_info', '')
+                processed_data[section_name] = handler_func(data)
+                called_handlers.add(handler_func)
+                break
+    
+    return processed_data
+
+
+def parse_multi_json_string(text: str) -> Dict:
+    """Parse a string containing multiple JSON objects using YAML"""
+    yaml_text = text.replace('} {', '}\n---\n{')
+    yaml_text = yaml_text.replace('}\n{', '}\n---\n{')
+    yaml_text = yaml_text.replace('}{', '}\n---\n{')
+    
+    documents = list(yaml.safe_load_all(yaml_text))
+    
+    result = {}
+    for doc in documents:
+        if doc and isinstance(doc, dict):
+            result.update(doc)
+    
+    return result
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+def load_my_resume_data(doc: str):
+
+
+    parsed_data = parse_multi_json_string(doc)
+    
+    # Route to appropriate handlers
+    print("\n" + "=" * 60)
+    print("PROCESSING RESUME DATA")
+    print("=" * 60 + "\n")
+    
+    processed_sections = route_yaml_data(parsed_data)
+    
+    print("\n" + "=" * 60)
+    print("✅ Processing Complete!")
+    print(f"Processed {len(processed_sections)} sections: {', '.join(processed_sections.keys())}")
+    print("=" * 60)
+
+
+
+    # try:
+    #     # Convert to YAML multi-document format
+    #     yaml_string = doc.replace('}\n{', '}\n---\n{').replace('} {', '}\n---\n{')
+
+    #     # Parse all documents
+    #     documents = list(yaml.safe_load_all(yaml_string))
+    #     print("Loading my resume data...")
+    #     # extract_personal_info(doc)
+    #     # Combine
+    #     result = {}
+    #     for doc in documents:
+    #         if doc:  # Skip None values
+    #             result.update(doc)
+
+    #     print(result)
+    # except:
+    #     print('Error parsing YAML documents')
+
+def extract_personal_info(doc: str):
+    try:
+        # Convert to YAML multi-document format
+        yaml_string = doc.replace('}\n{', '}\n---\n{').replace('} {', '}\n---\n{')
+
+        # Parse all documents
+        documents = list(yaml.safe_load_all(yaml_string))
+        print('-------------JSON Object----------------')
+        print(documents)
+        print('-------------JSON Object END----------------')
+        # class BasicInfo:
+        #     name: str
+        #     title: str
+        #     email: str
+        #     phone: str
+        #     location: str
+        #     linkedin: Optional[str] = None
+        #     github: Optional[str] = None
+        #     portfolio: Optional[str] = None
+        #     summary: Optional[str] = None
+    except:
+        print('Error parsing JSON documents')
+
+
 # def fill_resume_from_kb(kb_data: dict, job_description: str, ats_keywords: list) -> Resume:
 #     resume = Resume()
 
@@ -215,10 +527,13 @@ def build_resume_pipeline(kb_dir: str, job_description: str) -> Resume:
     print(combined_text)
     print("-------------- Retrieved Relevant Documents End ----------------")
 
-    ats_keywords = extract_ats_keywords(job_description)
+    formatted_jd = extract_ats_keywords(job_description)
 
     print("-------------- Extracted ATS Keywords ----------------")
-    print("Extracted ATS Keywords:", ats_keywords)
+    print("Extracted ATS Keywords:", formatted_jd.get('ats_keywords', {}))
+    EXT_ATS_KEYWORDS = formatted_jd.get('ats_keywords', {})
+    EXT_JOB_DESC = formatted_jd
+    load_my_resume_data(combined_text)
     print("-------------- Extracted ATS Keywords End ----------------")
 
     # relevant_experience = rag_manager.fetch_relevant_experience(

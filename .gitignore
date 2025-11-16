@@ -26,3 +26,5 @@ dist/
 
 
 **/credentials.json
+**/rb_venv
+**/chroma_db
